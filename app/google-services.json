@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "854358135467",
+    "project_id": "orvb-sem-proj",
+    "storage_bucket": "orvb-sem-proj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854358135467:android:a896ac4d05ee32b7865dee",
+        "android_client_info": {
+          "package_name": "com.example.orvb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8QitDJZZ9HcK4ydPKwRBwQS4dguLJQuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
