@@ -7,7 +7,8 @@
     android:layout_margin="10dp"
     android:id="@+id/car_item_card"
     app:cardElevation="6dp"
-    android:layout_gravity="center_horizontal">
+    android:layout_gravity="center_horizontal"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,11 +20,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageButton
+            <ImageView
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:src="@drawable/icon_add"
                 android:layout_gravity="center_horizontal"
+                android:id="@+id/carAddImage"
                 />
 
             <TextView

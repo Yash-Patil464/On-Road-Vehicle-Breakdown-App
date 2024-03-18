@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyCarsFragment extends Fragment {
 
     @Override
@@ -28,6 +33,15 @@ public class MyCarsFragment extends Fragment {
         DatabaseReference db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView show_name = rootView.findViewById(R.id.show_name);
+
+        List dataList = new ArrayList<>();
+        CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        dataList.add(new Car("ABC123", "Automatic", "Petrol"));
 
         db_reference.child("Userinfo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

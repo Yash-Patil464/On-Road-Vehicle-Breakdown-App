@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyCarsFragment">
+    tools:context=".MyCarsFragment"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,21 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="20dp"
-            android:id="@+id/recycleView"/>
+            android:id="@+id/recycleView"
+            android:background="@color/white"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:backgroundTint="#201658"
+            android:text="ADD ANOTHER CAR"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:drawableRight="@drawable/icon_arrow_right"
+            android:drawableTint="@color/white"
+            android:paddingRight="10dp"
+            android:background="@drawable/button_border"/>
     </LinearLayout>
 
 </FrameLayout>
