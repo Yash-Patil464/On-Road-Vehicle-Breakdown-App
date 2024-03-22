@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class CarDetailsPage extends Fragment {
 
     int gearType_val, fuelType_val;
@@ -112,7 +114,7 @@ public class CarDetailsPage extends Fragment {
         submit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String carPlateNum = et_car_plateNum.getText().toString();
+                String carPlateNum = Objects.requireNonNull(et_car_plateNum.getText()).toString();
 
                 if (carPlateNum.isEmpty()) {
                     Toast.makeText(requireContext(), "Enter the Plate No.", Toast.LENGTH_SHORT).show();

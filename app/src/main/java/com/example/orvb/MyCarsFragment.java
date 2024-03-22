@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyCarsFragment extends Fragment {
+    List dataList = new ArrayList<>();
+    String Geartype_str, Fueltype_str;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,14 +39,12 @@ public class MyCarsFragment extends Fragment {
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView show_name = rootView.findViewById(R.id.show_name);
         Button add_car_button = rootView.findViewById(R.id.add_car_button);
 
-        List dataList = new ArrayList<>();
+
         CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-
-        dataList.add(new Car("Plate No. of Car", "Gear Type", "Fuel Type"));
 
         add_car_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +63,36 @@ public class MyCarsFragment extends Fragment {
                 getName = extractFirstName(getName);
                 getName = capitalizeFirstLetter(getName);
                 show_name.setText(String.format("Hi, %s", getName));
+
+                if (snapshot.exists()) {
+                    for (DataSnapshot carSnapshot : snapshot.child("CarDetails").getChildren()) {
+                        String plateNumber = carSnapshot.getKey();
+                        int gearType = carSnapshot.child("GearType").getValue(Integer.class);
+                        int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
+
+                        if (gearType == 1) {
+                            Geartype_str = "Automatic";
+                        } else {
+                            Geartype_str = "Manual";
+                        }
+
+                        if (fuelType == 1) {
+                            Fueltype_str = "Petrol";
+                        } else if (fuelType == 2) {
+                            Fueltype_str = "CNG";
+                        } else {
+                            Fueltype_str = "Diesel";
+                        }
+
+                        Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
+
+                        dataList.add(car);
+                        adapter.notifyDataSetChanged();
+                    }
+                } else {
+                    // Handle the case where the user has no car details
+                    Log.d("CarDetails", "No car details found for this user.");
+                }
             }
 
             @Override
