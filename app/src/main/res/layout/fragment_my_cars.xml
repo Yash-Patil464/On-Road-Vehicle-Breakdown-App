@@ -51,7 +51,7 @@
         android:id="@+id/add_car_button"
         android:layout_margin="40dp"
         android:backgroundTint="#201658"
-        android:text="ADD ANOTHER CAR"
+        android:text="ADD CAR"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_gravity="bottom|center_horizontal"

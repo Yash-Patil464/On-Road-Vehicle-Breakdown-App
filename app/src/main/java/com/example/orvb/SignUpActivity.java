@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,6 +75,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(phone)
                         || TextUtils.isEmpty(pwd) || TextUtils.isEmpty(confirm_pwd)) {
                     Toast.makeText(SignUpActivity.this, "Fill all the fields", Toast.LENGTH_SHORT).show();
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(SignUpActivity.this, "Enter a valid email address", Toast.LENGTH_SHORT).show();
                 } else if (!pwd.equals(confirm_pwd)) {
                     Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                 } else {
@@ -100,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         loginRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
