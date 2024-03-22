@@ -12,26 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 public class LogInActivity extends AppCompatActivity {
 
     AppCompatEditText login_phone, login_pwd;
     AppCompatButton login_btn;
-
     TextView signupRedirect;
+    DatabaseReference db_reference;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -45,11 +37,12 @@ public class LogInActivity extends AppCompatActivity {
         login_btn = findViewById(R.id.login_btn);
         signupRedirect = findViewById(R.id.SignUpRedirect);
 
+        db_reference = FireBaseManager.getInstance().getDatabaseReference().child("Userinfo");
+
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (validateEmail() & validatePassword()){
+                if (validateEmail() & validatePassword()) {
                     checkEmail();
                 }
             }
@@ -58,82 +51,60 @@ public class LogInActivity extends AppCompatActivity {
         signupRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LogInActivity.this, SignUpActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LogInActivity.this, SignUpActivity.class));
             }
         });
-
     }
 
-    public Boolean validateEmail(){
+
+    public Boolean validateEmail() {
         String val = login_phone.getText().toString();
-        if(val.isEmpty()){
+        if (val.isEmpty()) {
             login_phone.setError("Enter Phone no.");
             return false;
-        }else{
+        } else {
             login_phone.setError(null);
             return true;
         }
     }
 
-    public Boolean validatePassword(){
+    public Boolean validatePassword() {
         String val = login_pwd.getText().toString();
-        if(val.isEmpty()){
+        if (val.isEmpty()) {
             login_pwd.setError("Enter Password");
             return false;
-        }else{
+        } else {
             login_pwd.setError(null);
             return true;
         }
     }
 
-    public void checkEmail(){
+    public void checkEmail() {
         String phone = login_phone.getText().toString();
         String pwd = login_pwd.getText().toString();
 
-        DatabaseReference db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
-
-        db_reference.child("Userinfo").addListenerForSingleValueEvent(new ValueEventListener() {
+        db_reference.child(phone).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(phone)){
-                    final String getPwd = snapshot.child(phone).child("Password").getValue(String.class);
-                    if (getPwd.equals(pwd)){
+                if (snapshot.exists()) {
+                    String getPwd = snapshot.child("Password").getValue(String.class);
+                    if (getPwd != null && getPwd.equals(pwd)) {
                         Toast.makeText(LogInActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                         UserManager.getInstance().setPhoneNumber(phone);
 
-                        int userType = snapshot.child(phone).child("UserType").getValue(Integer.class);
-
-                        if(userType == 1) {
-                            Intent intent = new Intent(LogInActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(LogInActivity.this, MechanicMainActivity.class);
-                            startActivity(intent);
-                        }
-                    }else {
-                        Toast.makeText(LogInActivity.this, "Enter Correct Credentials", Toast.LENGTH_SHORT).show();
+                        int userType = snapshot.child("UserType").getValue(Integer.class);
+                        Class<?> destinationActivity = userType == 1 ? MainActivity.class : MechanicMainActivity.class;
+                        startActivity(new Intent(LogInActivity.this, destinationActivity));
+                    } else {
+                        Toast.makeText(LogInActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
                     }
-                }else {
-                    Toast.makeText(LogInActivity.this, "Enter Correct Credentials", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LogInActivity.this, "User not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-

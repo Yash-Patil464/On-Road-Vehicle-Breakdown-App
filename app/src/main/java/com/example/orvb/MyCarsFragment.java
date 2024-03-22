@@ -28,7 +28,6 @@ import java.util.List;
 
 public class MyCarsFragment extends Fragment {
     List dataList = new ArrayList<>();
-    String Geartype_str, Fueltype_str;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +58,8 @@ public class MyCarsFragment extends Fragment {
         db_reference.child("Userinfo").child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
+
                 String getName = snapshot.child("Name").getValue(String.class);
                 getName = extractFirstName(getName);
                 getName = capitalizeFirstLetter(getName);
@@ -70,12 +71,14 @@ public class MyCarsFragment extends Fragment {
                         int gearType = carSnapshot.child("GearType").getValue(Integer.class);
                         int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
 
+                        String Geartype_str;
                         if (gearType == 1) {
                             Geartype_str = "Automatic";
                         } else {
                             Geartype_str = "Manual";
                         }
 
+                        String Fueltype_str;
                         if (fuelType == 1) {
                             Fueltype_str = "Petrol";
                         } else if (fuelType == 2) {
@@ -87,8 +90,8 @@ public class MyCarsFragment extends Fragment {
                         Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
 
                         dataList.add(car);
-                        adapter.notifyDataSetChanged();
                     }
+                    adapter.notifyDataSetChanged();
                 } else {
                     // Handle the case where the user has no car details
                     Log.d("CarDetails", "No car details found for this user.");
