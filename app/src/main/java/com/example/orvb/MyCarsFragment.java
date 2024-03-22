@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class MyCarsFragment extends Fragment {
         DatabaseReference db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView show_name = rootView.findViewById(R.id.show_name);
+        Button add_car_button = rootView.findViewById(R.id.add_car_button);
 
         List dataList = new ArrayList<>();
         CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
@@ -41,7 +43,17 @@ public class MyCarsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        dataList.add(new Car("ABC123", "Automatic", "Petrol"));
+        dataList.add(new Car("Plate No. of Car", "Gear Type", "Fuel Type"));
+
+        add_car_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new CarDetailsPage())
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         db_reference.child("Userinfo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

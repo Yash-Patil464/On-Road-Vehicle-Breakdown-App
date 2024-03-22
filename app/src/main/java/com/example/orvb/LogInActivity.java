@@ -102,9 +102,15 @@ public class LogInActivity extends AppCompatActivity {
                         Toast.makeText(LogInActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
                         UserManager.getInstance().setPhoneNumber(phone);
 
-                        Intent intent = new Intent(LogInActivity.this ,MainActivity.class);
-                        startActivity(intent);
+                        int userType = snapshot.child(phone).child("UserType").getValue(Integer.class);
 
+                        if(userType == 1) {
+                            Intent intent = new Intent(LogInActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(LogInActivity.this, MechanicMainActivity.class);
+                            startActivity(intent);
+                        }
                     }else {
                         Toast.makeText(LogInActivity.this, "Enter Correct Credentials", Toast.LENGTH_SHORT).show();
                     }

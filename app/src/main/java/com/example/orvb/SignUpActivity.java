@@ -95,7 +95,6 @@ public class SignUpActivity extends AppCompatActivity {
                             if (snapshot.hasChild(phone)){
                                 Toast.makeText(SignUpActivity.this, "Phone no. is already registered", Toast.LENGTH_SHORT).show();
                             } else {
-                                FirebaseHelperClass helperClass = new FirebaseHelperClass(name, email, phone, pwd, rb_value);
 
                                 db_reference.child("Userinfo").child(phone).child("Name").setValue(name);
                                 db_reference.child("Userinfo").child(phone).child("Email").setValue(email);
