@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/white">
 
         <TextView
             android:layout_width="match_parent"
@@ -40,7 +41,8 @@
             android:layout_margin="20dp"
             android:paddingLeft="10dp"
             android:id="@+id/recycleView"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:backgroundTint="@color/white"/>
 
     </LinearLayout>
     <Button
@@ -52,9 +54,6 @@
         android:text="ADD ANOTHER CAR"
         android:textStyle="bold"
         android:textColor="@color/white"
-        android:drawableRight="@drawable/icon_arrow_right"
-        android:drawableTint="@color/white"
-        android:paddingRight="10dp"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/button_border"/>
 </FrameLayout>

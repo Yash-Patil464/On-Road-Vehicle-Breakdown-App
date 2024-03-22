@@ -171,8 +171,7 @@
                     android:button="@android:color/transparent"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:background="@drawable/radiobutton_selector_left"
-                    android:onClick="onRadioButtonClicked"/>
+                    android:background="@drawable/radiobutton_selector_left"/>
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:layout_width="0dp"

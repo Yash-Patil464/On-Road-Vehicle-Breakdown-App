@@ -3,11 +3,177 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CarDetailsPage">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CarDetailsPage"
+    android:background="@color/white">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:id="@+id/header_layout">
+
+            <ImageButton
+                android:layout_width="59dp"
+                android:layout_height="80dp"
+                android:id="@+id/carDetails_BackButton"
+                android:background="@color/white"
+                android:src="@drawable/icon_back_arrow_button" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:gravity="center|left"
+                android:text="Car Details"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_below="@+id/header_layout"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/car_image" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="30dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:background="@drawable/border">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/carDetails_PlateNumLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:startIconDrawable="@drawable/icon_car_plate"
+                    android:layout_marginTop="10dp"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/carDetails_PlateNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="Plate No."
+                        android:inputType="text"
+                        android:background="@drawable/border"
+                        android:drawablePadding="8dp"
+                        android:padding="10dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_gear_type"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/radio_auto"
+                        android:textColor="@color/white"
+                        android:text="Automatic"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:button="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:background="@drawable/radiobutton_selector_left" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/radio_manual"
+                        android:textColor="@color/black"
+                        android:text="Manual"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:button="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_right" />
+                </RadioGroup>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_fuel_type"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/radio_petrol"
+                        android:textColor="@color/white"
+                        android:text="Petrol"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:button="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:background="@drawable/radiobutton_selector_left" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/radio_cng"
+                        android:textColor="@color/black"
+                        android:text="CNG"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:button="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_center" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/radio_diesel"
+                        android:textColor="@color/black"
+                        android:text="Diesel"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:button="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_right" />
+                </RadioGroup>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_car_details"
+        android:layout_margin="40dp"
+        android:backgroundTint="#201658"
+        android:text="Submit"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@drawable/button_border"/>
 </FrameLayout>

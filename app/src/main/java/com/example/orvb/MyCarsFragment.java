@@ -55,15 +55,13 @@ public class MyCarsFragment extends Fragment {
             }
         });
 
-        db_reference.child("Userinfo").addListenerForSingleValueEvent(new ValueEventListener() {
+        db_reference.child("Userinfo").child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(phoneNumber)){
-                    String getName = snapshot.child(phoneNumber).child("Name").getValue(String.class);
-                    getName = extractFirstName(getName);
-                    getName = capitalizeFirstLetter(getName);
-                    show_name.setText(String.format("Hi, %s", getName));
-                }
+                String getName = snapshot.child("Name").getValue(String.class);
+                getName = extractFirstName(getName);
+                getName = capitalizeFirstLetter(getName);
+                show_name.setText(String.format("Hi, %s", getName));
             }
 
             @Override
