@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".CarDetailsPage"
+    tools:context=".EditCarInfo"
     android:background="@color/white">
 
     <RelativeLayout
@@ -20,7 +20,7 @@
             <ImageButton
                 android:layout_width="59dp"
                 android:layout_height="80dp"
-                android:id="@+id/carDetails_BackButton"
+                android:id="@+id/editCarDetails_BackButton"
                 android:background="@color/white"
                 android:src="@drawable/icon_back_arrow_button" />
 
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:gravity="center|left"
-                android:text="Car Details"
+                android:text="Edit Car Details"
                 android:textColor="@color/black"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -66,7 +66,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Enter Vehicle Number"
+                    android:text="Edit Vehicle Number"
                     android:textStyle="bold"
                     android:textColor="#201658"
                     android:paddingLeft="25dp"/>
@@ -184,4 +184,5 @@
         android:textColor="@color/white"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/button_border"/>
+
 </FrameLayout>

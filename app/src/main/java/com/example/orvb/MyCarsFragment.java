@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +36,10 @@ public class MyCarsFragment extends Fragment {
         String phoneNumber = UserManager.getInstance().getPhoneNumber();
         DatabaseReference db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
 
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView show_name = rootView.findViewById(R.id.show_name);
+        TextView show_name = rootView.findViewById(R.id.show_name);
         Button add_car_button = rootView.findViewById(R.id.add_car_button);
-
+        ImageButton edit_CarInfo = rootView.findViewById(R.id.btn_EditCarInfo);
+        ImageButton delete_CarInfo = rootView.findViewById(R.id.btn_DeleteCarInfo);
 
         CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
 
@@ -101,6 +103,16 @@ public class MyCarsFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        edit_CarInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frameLayout, new EditCarInfo())
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
