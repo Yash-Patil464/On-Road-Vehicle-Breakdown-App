@@ -1,48 +1,39 @@
 package com.example.orvb;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.OnItemClickListener {
-    List<Car> dataList = new ArrayList<>();
+    private List<Car> dataList = new ArrayList<>();
+    private DatabaseReference db_reference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_cars, container, false);
         String phoneNumber = UserManager.getInstance().getPhoneNumber();
-        DatabaseReference db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
+        db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
 
         TextView show_name = rootView.findViewById(R.id.show_name);
         Button add_car_button = rootView.findViewById(R.id.add_car_button);
-
+        RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
         adapter.setOnItemClickListener(this);
-
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -75,7 +66,6 @@ public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.On
                         if (carSnapshot.hasChild("FuelType") && carSnapshot.hasChild("GearType")) {
                             int gearType = carSnapshot.child("GearType").getValue(Integer.class);
                             int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
-
                             String Geartype_str = (gearType == 1) ? "Automatic" : "Manual";
                             String Fueltype_str;
                             switch (fuelType) {
@@ -92,19 +82,16 @@ public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.On
                                     Fueltype_str = "Unknown";
                                     break;
                             }
-
                             Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
                             dataList.add(car);
                         }
                     }
-
                     adapter.notifyDataSetChanged();
                 } else {
                     // Handle the case where the user does not exist
                     Log.d("MyCarsFragment", "User with phone number " + phoneNumber + " does not exist.");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // Handle the error
@@ -129,14 +116,13 @@ public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.On
         return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
+    @Override
     public void onItemClick(String plateNumber) {
         // Launch EditCarInfo fragment with the selected plate number
         Bundle bundle = new Bundle();
         bundle.putString("plateNumber", plateNumber);
-
         EditCarInfo editCarInfoFragment = new EditCarInfo();
         editCarInfoFragment.setArguments(bundle);
-
         requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, editCarInfoFragment)
                 .addToBackStack(null)

@@ -111,7 +111,6 @@ public class EditCarInfo extends Fragment {
             public void onClick(View v) {
                 DatabaseReference carRef = db_reference.child("Userinfo").child(phoneNumber).child("CarDetails");
                 carRef.child(platenum).removeValue();
-                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
@@ -136,17 +135,23 @@ public class EditCarInfo extends Fragment {
     }
 
     private void setGearType(AppCompatRadioButton selected, AppCompatRadioButton unselected, int value) {
-        selected.setTextColor(Color.WHITE);
-        unselected.setTextColor(Color.BLACK);
+        selected.setTextColor(Color.BLACK); // Set selected radio button text color to black
+        selected.setBackgroundColor(Color.WHITE); // Set selected radio button background color to white for better visibility
+        unselected.setTextColor(Color.GRAY); // Set unselected radio button text color to gray
+        unselected.setBackgroundColor(Color.TRANSPARENT); // Set unselected radio button background color to transparent
         gearType_val = value;
     }
 
     private void setFuelType(AppCompatRadioButton selected, AppCompatRadioButton unselected1, AppCompatRadioButton unselected2, int value) {
-        selected.setTextColor(Color.WHITE);
-        unselected1.setTextColor(Color.BLACK);
-        unselected2.setTextColor(Color.BLACK);
+        selected.setTextColor(Color.BLACK); // Set selected radio button text color to black
+        selected.setBackgroundColor(Color.WHITE); // Set selected radio button background color to white for better visibility
+        unselected1.setTextColor(Color.GRAY); // Set unselected radio button text color to gray
+        unselected1.setBackgroundColor(Color.TRANSPARENT); // Set unselected radio button background color to transparent
+        unselected2.setTextColor(Color.GRAY); // Set unselected radio button text color to gray
+        unselected2.setBackgroundColor(Color.TRANSPARENT); // Set unselected radio button background color to transparent
         fuelType_val = value;
     }
+
 
     private void updateCarDetails(String oldPlateNumber, String newPlateNumber, int gearType, int fuelType) {
         // Update car details in Firebase
