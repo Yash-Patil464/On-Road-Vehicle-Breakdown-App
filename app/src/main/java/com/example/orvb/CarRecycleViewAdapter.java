@@ -16,9 +16,17 @@ import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarRecycleViewAdapter extends  RecyclerView.Adapter<CarRecycleViewAdapter.ViewHolder> {
-    String tag = "CarRecycleViewAdapter";
-    List<Car> dataList;
+public class CarRecycleViewAdapter extends RecyclerView.Adapter<CarRecycleViewAdapter.ViewHolder> {
+    private List<Car> dataList;
+    private OnItemClickListener clickListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(String plateNumber);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
+    }
 
     public CarRecycleViewAdapter(List<Car> dataList) {
         this.dataList = dataList;
@@ -27,9 +35,7 @@ public class CarRecycleViewAdapter extends  RecyclerView.Adapter<CarRecycleViewA
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(tag, "onCreateViewHolder: called.");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.car_item_layout, parent, false);
-
         return new ViewHolder(view);
     }
 
@@ -46,19 +52,26 @@ public class CarRecycleViewAdapter extends  RecyclerView.Adapter<CarRecycleViewA
         return dataList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView carImage;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView carPlate, carGearType, carFuelType;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            carImage = itemView.findViewById(R.id.carAddImage);
             carPlate = itemView.findViewById(R.id.carNumberTextView);
             carGearType = itemView.findViewById(R.id.carGearTextView);
             carFuelType = itemView.findViewById(R.id.carFuelTextView);
 
+            // Set click listener for the item view
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION && clickListener != null) {
+                String plateNumber = dataList.get(position).getPlateNumber();
+                clickListener.onItemClick(plateNumber);
+            }
         }
     }
 }

@@ -35,42 +35,17 @@
             />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="20dp"
-            android:paddingLeft="10dp"
-            android:id="@+id/recycleView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="80dp"
             android:background="@color/white"
-            android:backgroundTint="@color/white"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:backgroundTint="@color/white"
             android:orientation="horizontal"
-            android:background="@color/white"
-            android:gravity="center">
+            android:paddingLeft="10dp" />
 
-            <ImageButton
-                android:id="@+id/btn_EditCarInfo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_edit"
-                android:background="@drawable/button_border"
-                android:layout_margin="10dp"/>
-
-            <ImageButton
-                android:id="@+id/btn_DeleteCarInfo"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/icon_delete"
-                android:background="@drawable/button_border"
-                android:layout_margin="10dp"/>
-        </LinearLayout>
     </LinearLayout>
     <Button
         android:layout_width="match_parent"

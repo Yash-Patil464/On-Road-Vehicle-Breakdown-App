@@ -27,8 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCarsFragment extends Fragment {
-    List dataList = new ArrayList<>();
+public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.OnItemClickListener {
+    List<Car> dataList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,10 +38,9 @@ public class MyCarsFragment extends Fragment {
 
         TextView show_name = rootView.findViewById(R.id.show_name);
         Button add_car_button = rootView.findViewById(R.id.add_car_button);
-        ImageButton edit_CarInfo = rootView.findViewById(R.id.btn_EditCarInfo);
-        ImageButton delete_CarInfo = rootView.findViewById(R.id.btn_DeleteCarInfo);
 
         CarRecycleViewAdapter adapter = new CarRecycleViewAdapter(dataList);
+        adapter.setOnItemClickListener(this);
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recycleView);
         recyclerView.setAdapter(adapter);
@@ -62,57 +61,53 @@ public class MyCarsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
 
-                String getName = snapshot.child("Name").getValue(String.class);
-                getName = extractFirstName(getName);
-                getName = capitalizeFirstLetter(getName);
-                show_name.setText(String.format("Hi, %s", getName));
-
                 if (snapshot.exists()) {
-                    for (DataSnapshot carSnapshot : snapshot.child("CarDetails").getChildren()) {
-                        String plateNumber = carSnapshot.getKey();
-                        int gearType = carSnapshot.child("GearType").getValue(Integer.class);
-                        int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
-
-                        String Geartype_str;
-                        if (gearType == 1) {
-                            Geartype_str = "Automatic";
-                        } else {
-                            Geartype_str = "Manual";
-                        }
-
-                        String Fueltype_str;
-                        if (fuelType == 1) {
-                            Fueltype_str = "Petrol";
-                        } else if (fuelType == 2) {
-                            Fueltype_str = "CNG";
-                        } else {
-                            Fueltype_str = "Diesel";
-                        }
-
-                        Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
-
-                        dataList.add(car);
+                    String getName = snapshot.child("Name").getValue(String.class);
+                    if (getName != null) {
+                        getName = extractFirstName(getName);
+                        getName = capitalizeFirstLetter(getName);
+                        show_name.setText(String.format("Hi, %s", getName));
                     }
+
+                    DataSnapshot carDetailsSnapshot = snapshot.child("CarDetails");
+                    for (DataSnapshot carSnapshot : carDetailsSnapshot.getChildren()) {
+                        String plateNumber = carSnapshot.getKey();
+                        if (carSnapshot.hasChild("FuelType") && carSnapshot.hasChild("GearType")) {
+                            int gearType = carSnapshot.child("GearType").getValue(Integer.class);
+                            int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
+
+                            String Geartype_str = (gearType == 1) ? "Automatic" : "Manual";
+                            String Fueltype_str;
+                            switch (fuelType) {
+                                case 1:
+                                    Fueltype_str = "Petrol";
+                                    break;
+                                case 2:
+                                    Fueltype_str = "CNG";
+                                    break;
+                                case 3:
+                                    Fueltype_str = "Diesel";
+                                    break;
+                                default:
+                                    Fueltype_str = "Unknown";
+                                    break;
+                            }
+
+                            Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
+                            dataList.add(car);
+                        }
+                    }
+
                     adapter.notifyDataSetChanged();
                 } else {
-                    // Handle the case where the user has no car details
-                    Log.d("CarDetails", "No car details found for this user.");
+                    // Handle the case where the user does not exist
+                    Log.d("MyCarsFragment", "User with phone number " + phoneNumber + " does not exist.");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        edit_CarInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new EditCarInfo())
-                        .addToBackStack(null)
-                        .commit();
+                // Handle the error
             }
         });
 
@@ -132,5 +127,19 @@ public class MyCarsFragment extends Fragment {
             return input;
         }
         return input.substring(0, 1).toUpperCase() + input.substring(1);
+    }
+
+    public void onItemClick(String plateNumber) {
+        // Launch EditCarInfo fragment with the selected plate number
+        Bundle bundle = new Bundle();
+        bundle.putString("plateNumber", plateNumber);
+
+        EditCarInfo editCarInfoFragment = new EditCarInfo();
+        editCarInfoFragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, editCarInfoFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -60,19 +60,21 @@ public class CarDetailsPage extends Fragment {
                 db_reference.child("Userinfo").child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.child("CarDetails").hasChild(carPlateNum)){
-                            Toast.makeText(requireContext(),"This Plate No. has Already been added", Toast.LENGTH_SHORT).show();
-                        } else {
-                            db_reference.child("Userinfo").child(phoneNumber).child("CarDetails").child(carPlateNum).child("GearType").setValue(gearType_val);
-                            db_reference.child("Userinfo").child(phoneNumber).child("CarDetails").child(carPlateNum).child("FuelType").setValue(fuelType_val);
-                            Toast.makeText(requireContext(),"Successfully added", Toast.LENGTH_SHORT).show();
-                            requireActivity().getSupportFragmentManager().popBackStack();
+                        if (isAdded()) { // Check if fragment is attached
+                            if (snapshot.child("CarDetails").hasChild(carPlateNum)) {
+                                Toast.makeText(requireContext(), "This Plate No. has Already been added", Toast.LENGTH_SHORT).show();
+                            } else {
+                                db_reference.child("Userinfo").child(phoneNumber).child("CarDetails").child(carPlateNum).child("GearType").setValue(gearType_val);
+                                db_reference.child("Userinfo").child(phoneNumber).child("CarDetails").child(carPlateNum).child("FuelType").setValue(fuelType_val);
+                                Toast.makeText(requireContext(), "Successfully added", Toast.LENGTH_SHORT).show();
+                                requireActivity().getSupportFragmentManager().popBackStack();
+                            }
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // Handle onCancelled
                     }
                 });
             }

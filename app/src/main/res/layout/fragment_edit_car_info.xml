@@ -12,25 +12,25 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:id="@+id/header_layout">
+            android:background="@color/white">
 
             <ImageButton
+                android:id="@+id/edit_backBtn"
                 android:layout_width="59dp"
                 android:layout_height="80dp"
-                android:id="@+id/editCarDetails_BackButton"
                 android:background="@color/white"
                 android:src="@drawable/icon_back_arrow_button" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:gravity="center|left"
-                android:text="Edit Car Details"
+                android:text="Edit Car Info"
                 android:textColor="@color/black"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -41,17 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_below="@+id/header_layout"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/car_image" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/edit_CardView"
             android:layout_below="@+id/logo"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
             app:cardCornerRadius="30dp"
             app:cardElevation="20dp">
@@ -59,130 +60,143 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/border"
                 android:orientation="vertical"
-                android:padding="24dp"
-                android:background="@drawable/border">
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
                     android:text="Edit Vehicle Number"
-                    android:textStyle="bold"
                     android:textColor="#201658"
-                    android:paddingLeft="25dp"/>
+                    android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/carDetails_PlateNumLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:startIconDrawable="@drawable/icon_car_plate"
                     android:layout_marginTop="10dp"
-                    app:hintEnabled="false">
+                    app:hintEnabled="false"
+                    app:startIconDrawable="@drawable/icon_car_plate">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/carDetails_PlateNum"
+                        android:id="@+id/edit_carDetails_PlateNum"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:hint="DL01AB12XX"
-                        android:inputType="text"
                         android:background="@drawable/border"
                         android:drawablePadding="8dp"
+                        android:hint="DL01AB12XX"
+                        android:inputType="text"
                         android:padding="10dp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <RadioGroup
+                    android:id="@+id/radio_gear_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radio_gear_type"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/edit_radio_auto"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:id="@+id/radio_auto"
-                        android:textColor="@color/white"
-                        android:text="Automatic"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:button="@android:color/transparent"
                         android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_left"
+                        android:button="@android:color/transparent"
                         android:checked="true"
-                        android:background="@drawable/radiobutton_selector_left" />
+                        android:gravity="center"
+                        android:text="Automatic"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/edit_radio_manual"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:id="@+id/radio_manual"
-                        android:textColor="@color/black"
-                        android:text="Manual"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:button="@android:color/transparent"
                         android:layout_weight="1"
-                        android:background="@drawable/radiobutton_selector_right" />
+                        android:background="@drawable/radiobutton_selector_right"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Manual"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
                 </RadioGroup>
 
                 <RadioGroup
+                    android:id="@+id/radio_fuel_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radio_fuel_type"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/edit_radio_petrol"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:id="@+id/radio_petrol"
-                        android:textColor="@color/white"
-                        android:text="Petrol"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:button="@android:color/transparent"
                         android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_left"
+                        android:button="@android:color/transparent"
                         android:checked="true"
-                        android:background="@drawable/radiobutton_selector_left" />
+                        android:gravity="center"
+                        android:text="Petrol"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/edit_radio_cng"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:id="@+id/radio_cng"
-                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:background="@drawable/radiobutton_selector_center"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
                         android:text="CNG"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:button="@android:color/transparent"
-                        android:layout_weight="1"
-                        android:background="@drawable/radiobutton_selector_center" />
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/edit_radio_diesel"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:id="@+id/radio_diesel"
-                        android:textColor="@color/black"
-                        android:text="Diesel"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:button="@android:color/transparent"
                         android:layout_weight="1"
-                        android:background="@drawable/radiobutton_selector_right" />
+                        android:background="@drawable/radiobutton_selector_right"
+                        android:button="@android:color/transparent"
+                        android:gravity="center"
+                        android:text="Diesel"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
                 </RadioGroup>
-
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <ImageButton
+            android:id="@+id/btn_DeleteCarInfo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/edit_CardView"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_delete"
+            android:background="@drawable/button_border"
+            android:backgroundTint="#FF204E"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center_horizontal"/>
     </RelativeLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/submit_car_details"
-        android:layout_margin="40dp"
+        android:id="@+id/edit_submit_car_details"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="#201658"
         android:text="Submit"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@drawable/button_border"/>
-
 </FrameLayout>
