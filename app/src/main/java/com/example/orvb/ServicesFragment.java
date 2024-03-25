@@ -12,8 +12,10 @@ public class ServicesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_services, container, false);
 
 
-        return inflater.inflate(R.layout.fragment_services, container, false);
+
+        return rootView;
     }
 }

@@ -1,19 +1,11 @@
 package com.example.orvb;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.net.ConnectException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarRecycleViewAdapter extends RecyclerView.Adapter<CarRecycleViewAdapter.ViewHolder> {
@@ -24,12 +16,12 @@ public class CarRecycleViewAdapter extends RecyclerView.Adapter<CarRecycleViewAd
         void onItemClick(String plateNumber);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.clickListener = listener;
-    }
-
     public CarRecycleViewAdapter(List<Car> dataList) {
         this.dataList = dataList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
     }
 
     @NonNull
@@ -41,10 +33,7 @@ public class CarRecycleViewAdapter extends RecyclerView.Adapter<CarRecycleViewAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Car car = dataList.get(position);
-        holder.carPlate.setText(car.getPlateNumber());
-        holder.carGearType.setText(car.getGearType());
-        holder.carFuelType.setText(car.getFuelType());
+        holder.bind(dataList.get(position));
     }
 
     @Override
@@ -53,24 +42,27 @@ public class CarRecycleViewAdapter extends RecyclerView.Adapter<CarRecycleViewAd
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView carPlate, carGearType, carFuelType;
+        private TextView carPlate, carGearType, carFuelType;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             carPlate = itemView.findViewById(R.id.carNumberTextView);
             carGearType = itemView.findViewById(R.id.carGearTextView);
             carFuelType = itemView.findViewById(R.id.carFuelTextView);
-
-            // Set click listener for the item view
             itemView.setOnClickListener(this);
+        }
+
+        public void bind(Car car) {
+            carPlate.setText(car.getPlateNumber());
+            carGearType.setText(car.getGearType());
+            carFuelType.setText(car.getFuelType());
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && clickListener != null) {
-                String plateNumber = dataList.get(position).getPlateNumber();
-                clickListener.onItemClick(plateNumber);
+                clickListener.onItemClick(dataList.get(position).getPlateNumber());
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.orvb;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,7 +28,7 @@ public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_cars, container, false);
         String phoneNumber = UserManager.getInstance().getPhoneNumber();
-        db_reference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://orvb-sem-proj-default-rtdb.firebaseio.com/");
+        db_reference = FireBaseManager.getInstance().getDatabaseReference();
 
         TextView show_name = rootView.findViewById(R.id.show_name);
         Button add_car_button = rootView.findViewById(R.id.add_car_button);
@@ -40,92 +41,79 @@ public class MyCarsFragment extends Fragment implements CarRecycleViewAdapter.On
         add_car_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frameLayout, new CarDetailsPage())
-                        .addToBackStack(null)
-                        .commit();
+                replaceFragment(new CarDetailsPage());
             }
         });
 
         db_reference.child("Userinfo").child(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("StringFormatInvalid")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dataList.clear();
 
                 if (snapshot.exists()) {
-                    String getName = snapshot.child("Name").getValue(String.class);
-                    if (getName != null) {
-                        getName = extractFirstName(getName);
-                        getName = capitalizeFirstLetter(getName);
-                        show_name.setText(String.format("Hi, %s", getName));
+                    String name = snapshot.child("Name").getValue(String.class);
+                    if (name != null) {
+                        name = capitalizeAndExtractFirstName(name);
+                        show_name.setText(String.format("Hi, %s", name));
                     }
 
-                    DataSnapshot carDetailsSnapshot = snapshot.child("CarDetails");
-                    for (DataSnapshot carSnapshot : carDetailsSnapshot.getChildren()) {
-                        String plateNumber = carSnapshot.getKey();
+                    for (DataSnapshot carSnapshot : snapshot.child("CarDetails").getChildren()) {
                         if (carSnapshot.hasChild("FuelType") && carSnapshot.hasChild("GearType")) {
                             int gearType = carSnapshot.child("GearType").getValue(Integer.class);
                             int fuelType = carSnapshot.child("FuelType").getValue(Integer.class);
-                            String Geartype_str = (gearType == 1) ? "Automatic" : "Manual";
-                            String Fueltype_str;
-                            switch (fuelType) {
-                                case 1:
-                                    Fueltype_str = "Petrol";
-                                    break;
-                                case 2:
-                                    Fueltype_str = "CNG";
-                                    break;
-                                case 3:
-                                    Fueltype_str = "Diesel";
-                                    break;
-                                default:
-                                    Fueltype_str = "Unknown";
-                                    break;
-                            }
-                            Car car = new Car(plateNumber, Geartype_str, Fueltype_str);
-                            dataList.add(car);
+                            String gearTypeStr = (gearType == 1) ? "Automatic" : "Manual";
+                            String fuelTypeStr = getFuelTypeString(fuelType);
+                            String plateNumber = carSnapshot.getKey();
+                            dataList.add(new Car(plateNumber, gearTypeStr, fuelTypeStr));
                         }
                     }
                     adapter.notifyDataSetChanged();
                 } else {
-                    // Handle the case where the user does not exist
                     Log.d("MyCarsFragment", "User with phone number " + phoneNumber + " does not exist.");
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle the error
+                Log.e("MyCarsFragment", "Error: " + error.getMessage());
             }
         });
 
         return rootView;
     }
 
-    public static String extractFirstName(String fullName) {
-        if (fullName == null || fullName.isEmpty()) {
-            return fullName;
-        }
-        String[] parts = fullName.trim().split("\\s+");
-        return parts[0];
+    private void replaceFragment(Fragment fragment) {
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
-    public static String capitalizeFirstLetter(String input) {
-        if (input == null || input.isEmpty()) {
-            return input;
+    private String capitalizeAndExtractFirstName(String fullName) {
+        String[] parts = fullName.trim().split("\\s+");
+        return parts[0].substring(0, 1).toUpperCase() + parts[0].substring(1);
+    }
+
+    private String getFuelTypeString(int fuelType) {
+        switch (fuelType) {
+            case 1:
+                return "Petrol";
+            case 2:
+                return "CNG";
+            case 3:
+                return "Diesel";
+            default:
+                return "Unknown";
         }
-        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
     @Override
     public void onItemClick(String plateNumber) {
-        // Launch EditCarInfo fragment with the selected plate number
         Bundle bundle = new Bundle();
         bundle.putString("plateNumber", plateNumber);
         EditCarInfo editCarInfoFragment = new EditCarInfo();
         editCarInfoFragment.setArguments(bundle);
-        requireActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayout, editCarInfoFragment)
-                .addToBackStack(null)
-                .commit();
+        replaceFragment(editCarInfoFragment);
     }
 }
