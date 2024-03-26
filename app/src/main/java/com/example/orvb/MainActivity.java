@@ -30,8 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         int selectedColor = 0xFFEABE6C;
         int defaultColor = Color.BLACK;
-        ColorStateList colors = new ColorStateList(new int[][]{{android.R.attr.state_checked}, {}},
-                new int[]{selectedColor, defaultColor});
+        ColorStateList colors = new ColorStateList(new int[][]{{android.R.attr.state_checked}, {}}, new int[]{selectedColor, defaultColor});
         binding.bottomNavView.setItemIconTintList(colors);
 
         binding.bottomNavView.setOnItemSelectedListener(menuItem -> {
